@@ -10,6 +10,6 @@ import (
 	"myproject/internal/service"
 )
 
-func InitApp() (*App, func(), error) {
-	panic(wire.Build(controller.NewController, service.NewService, dao.NewDao, dao.NewDb, NewApp))
+func initApp() (*App, func(), error) {
+	panic(wire.Build(controller.NewController, service.NewService, dao.Provider, NewApp))
 }

@@ -3,7 +3,6 @@ package test
 import (
 	"flag"
 	log "github.com/sirupsen/logrus"
-	"myproject/configs/mconfig"
 	"myproject/internal/di"
 	"testing"
 )
@@ -15,20 +14,24 @@ var b string
 func init() {
 	// 测试函数执行前 go-test会提前帮我们调用flag.Parse() 不需要显示调用
 	// 定义在init函数才可以
-	flag.StringVar(&b, "ss", "", "ss")
+	flag.StringVar(&b, "b", "", "测试参数读取")
 }
 
-func Test_app(t *testing.T) {
-	if b != "" {
-		log.Info(b)
-	}
-	if err := mconfig.Init(); err != nil {
-		log.Error(err)
-	}
-	app, _, err := di.InitApp()
-	if err != nil {
-		log.Error(err)
-	}
+func Test_db(t *testing.T) {
+	app := di.BuildApp()
 	u := app.Dao.GetUser(2)
 	log.Info("查询用户名称：", u.Username)
+}
+
+func Test_redisPing(t *testing.T) {
+	app := di.BuildApp()
+	app.Dao.Ping()
+}
+
+func Test_redisInsertAndGet(t *testing.T) {
+	app := di.BuildApp()
+	name := "name"
+	app.Dao.Set(name, "张三", -1)
+	val := app.Dao.Get(name)
+	log.Info("Test_redisInsertAndGet val:", val)
 }

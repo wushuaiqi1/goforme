@@ -14,12 +14,16 @@ import (
 
 // Injectors from wire.go:
 
-func InitApp() (*App, func(), error) {
+func initApp() (*App, func(), error) {
 	db, err := dao.NewDb()
 	if err != nil {
 		return nil, nil, err
 	}
-	daoDao := dao.NewDao(db)
+	client, err := dao.NewRedis()
+	if err != nil {
+		return nil, nil, err
+	}
+	daoDao := dao.NewDao(db, client)
 	serviceService := service.NewService(daoDao)
 	controllerController := controller.NewController(serviceService)
 	app := NewApp(controllerController, serviceService, daoDao)
