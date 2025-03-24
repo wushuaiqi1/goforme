@@ -5,6 +5,10 @@
 - gorm
 - wire
 - viper
+- mongo
+- es
+- mysql
+- redis
 
 
 # 细节

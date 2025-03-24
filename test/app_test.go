@@ -2,6 +2,7 @@ package test
 
 import (
 	"flag"
+	"github.com/magiconair/properties/assert"
 	log "github.com/sirupsen/logrus"
 	"myproject/internal/di"
 	"testing"
@@ -26,6 +27,12 @@ func Test_db(t *testing.T) {
 func Test_redisPing(t *testing.T) {
 	app := di.BuildApp()
 	app.Dao.Ping()
+}
+
+func Test_mongoPing(t *testing.T) {
+	app := di.BuildApp()
+	res, _ := app.Dao.PingMongo()
+	assert.Equal(t, true, res)
 }
 
 func Test_redisInsertAndGet(t *testing.T) {
