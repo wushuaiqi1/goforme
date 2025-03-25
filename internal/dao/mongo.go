@@ -18,11 +18,6 @@ func NewSubjectMongoClient() (qmgoClient *qmgo.QmgoClient, err error) {
 	if err != nil {
 		return
 	}
-	defer func() {
-		if err = qmgoClient.Close(ctx); err != nil {
-			panic(err)
-		}
-	}()
 	return
 }
 

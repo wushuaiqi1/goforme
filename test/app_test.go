@@ -1,9 +1,10 @@
 package test
 
 import (
+	"context"
 	"flag"
-	"github.com/magiconair/properties/assert"
 	log "github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 	"myproject/internal/di"
 	"testing"
 )
@@ -41,4 +42,13 @@ func Test_redisInsertAndGet(t *testing.T) {
 	app.Dao.Set(name, "张三", -1)
 	val := app.Dao.Get(name)
 	log.Info("Test_redisInsertAndGet val:", val)
+}
+
+func Test_ListRubricRecord(t *testing.T) {
+	app := di.BuildApp()
+	receive, err := app.Dao.ListRubricRecord(context.Background(), "1908816", "1", "503560")
+	if err != nil {
+		panic(err)
+	}
+	assert.NotEqual(t, 0, len(receive))
 }
