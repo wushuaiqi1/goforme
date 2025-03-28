@@ -27,7 +27,11 @@ func initApp() (*App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	daoDao := dao.NewDao(db, client, qmgoClient)
+	elasticClient, err := dao.NewEsClient()
+	if err != nil {
+		return nil, nil, err
+	}
+	daoDao := dao.NewDao(db, client, qmgoClient, elasticClient)
 	serviceService := service.NewService(daoDao)
 	controllerController := controller.NewController(serviceService)
 	app := NewApp(controllerController, serviceService, daoDao)

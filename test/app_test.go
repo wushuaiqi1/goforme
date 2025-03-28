@@ -46,9 +46,22 @@ func Test_redisInsertAndGet(t *testing.T) {
 
 func Test_ListRubricRecord(t *testing.T) {
 	app := di.BuildApp()
-	receive, err := app.Dao.ListRubricRecord(context.Background(), "1908816", "1", "503560")
+	classId := 1908816
+	lessonIndex := 1
+	receive, err := app.Dao.ListRubricRecord(context.Background(), classId, lessonIndex, "503560")
 	if err != nil {
 		panic(err)
 	}
 	assert.NotEqual(t, 0, len(receive))
+}
+
+func Test_EsQuery(t *testing.T) {
+	app := di.BuildApp()
+	var EsAnswerInteractionList = []string{
+		"INTERACTION_CHOICE_OPEN",
+		"CHOICE_LIGHT_OPEN",
+		// "INTERACTION_CHOICE_SCENE_OPEN", // 老师现场发起选择题
+	}
+	total, _ := app.Dao.QueryInteractionTotal("1908781", 1, EsAnswerInteractionList)
+	assert.Equal(t, 5, total)
 }

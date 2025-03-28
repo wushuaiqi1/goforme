@@ -5,12 +5,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"myproject/internal/model"
+	"strconv"
 )
 
-func (d *Dao) ListRubricRecord(ctx context.Context, cId, cNum, stuId string) (rubricReceive []*model.BeiboRubricRecord, err error) {
+// ListRubricRecord 获取学生某一讲主观题答题记录
+func (d *Dao) ListRubricRecord(ctx context.Context, classId, lessonIndex int, stuId string) (rubricReceive []*model.BeiboRubricRecord, err error) {
+	cid := strconv.Itoa(classId)
+	cnum := strconv.Itoa(lessonIndex)
 	query := bson.M{
-		"cid":   cId,
-		"cnum":  cNum,
+		"cid":   cid,
+		"cnum":  cnum,
 		"stuid": stuId,
 	}
 
